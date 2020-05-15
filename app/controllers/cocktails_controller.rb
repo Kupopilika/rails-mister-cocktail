@@ -5,15 +5,29 @@ class CocktailsController < ApplicationController
   end
 
   def show
+    @dose = Dose.new
   end
 
   def new
     @cocktail = Cocktail.new
   end
 
+  def create
+    @cocktail = Cocktail.new(cocktails_param)
+    if @cocktail.save
+      redirect_to cocktails_path
+    else
+      render new
+    end
+  end
+
   private
 
   def set_cocktail
     @cocktail = Cocktail.find(params[:id])
+  end
+
+  def cocktails_param
+    params.require(:cocktail).permit(:name)
   end
 end
